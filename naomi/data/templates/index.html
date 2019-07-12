@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+ <meta charset="UTF-8">
+</head>
+
+<body>
+
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} Flasky - racine {% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+<h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}!</h1>
+</div>
+
+<h3> User profile </h3>
+
+  {{ wtf.quick_form(user_form) }} 
+<!--
+<form method="POST">
+
+</form>  -->
+
+</br>
+<h3> Speech to Text </h3>
+
+{{wtf.quick_form(stt_form)}}
+
+</br>
+
+<h3> Text To speech </h3>
+
+{{wtf.quick_form(tts_form)}}
+
+</br>
+
+<h3> Audio configuration </h3>
+
+{{wtf.quick_form(audio_form)}}
+
+</br>
+
+<h3> Import a configuration file </h3>
+
+{{wtf.quick_form(file_form)}}
+
+</br>
+
+{% endblock %}
+
+
+
+
+</body>
+
+
+</html>

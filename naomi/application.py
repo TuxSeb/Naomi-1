@@ -12,6 +12,7 @@ from . import mic
 from . import profile
 from . import local_mic
 from . import batch_mic
+from . import webui
 
 USE_STANDARD_MIC = 0
 USE_TEXT_MIC = 1
@@ -418,6 +419,9 @@ class Naomi(object):
 
         self.conversation = conversation.Conversation(
             self.mic, self.brain, self.config)
+
+        self.webui = webui.WebUI(self.mic,
+            self.conversation)
 
     def list_plugins(self):
         plugins = self.plugins.get_plugins()
