@@ -3,6 +3,11 @@
 import logging
 import requests
 from naomi import plugin
+from naomi import profile
+
+from flask_wtf import FlaskForm
+from wtforms import *
+from wtforms.validators import DataRequired, Email
 
 # There seems to be no way to get language setting of the defined app
 # Last updated: April 06, 2016

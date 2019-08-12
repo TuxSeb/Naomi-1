@@ -30,7 +30,8 @@ class Naomi(object):
         save_audio=False,
         save_passive_audio=False,
         save_active_audio=False,
-        save_noise=False
+        save_noise=False,
+        no_webui=False
     ):
         self._logger = logging.getLogger(__name__)
         if repopulate:
@@ -168,9 +169,14 @@ class Naomi(object):
         self.audio = ae_info.plugin_class(ae_info, self.config)
         # self.check_settings(self.audio, repopulate)
 
+        in_out_device = {}
+
+
         # Initialize audio input device
         devices = [device.slug for device in self.audio.get_devices(
             device_type=audioengine.DEVICE_TYPE_INPUT)]
+        in_out_device["input"] = devices
+        
         try:
             device_slug = profile.get_profile_var(['audio', 'input_device'])
         except KeyError:
@@ -235,6 +241,8 @@ class Naomi(object):
         # Initialize audio output device
         devices = [device.slug for device in self.audio.get_devices(
             device_type=audioengine.DEVICE_TYPE_OUTPUT)]
+        in_out_device["output"] = devices
+
         try:
             device_slug = self.config['audio']['output_device']
         except KeyError:
@@ -417,11 +425,16 @@ class Naomi(object):
                 save_noise=save_noise
             )
 
+
+
         self.conversation = conversation.Conversation(
             self.mic, self.brain, self.config)
 
-        self.webui = webui.WebUI(self.mic,
-            self.conversation)
+        if no_webui:
+            pass
+        else:
+            self.webui = webui.WebUI(self.mic,
+                        self.conversation, in_out_device)
 
     def list_plugins(self):
         plugins = self.plugins.get_plugins()
@@ -436,6 +449,12 @@ class Naomi(object):
         for device in self.audio.get_devices():
             device.print_device_info(
                 verbose=(self._logger.getEffectiveLevel() == logging.DEBUG))
+
+
+
+    def start_web_ui(self):
+        self.webui = webui.WebUI(self.mic,
+            self.conversation)
 
     def run(self):
         self.conversation.askName()

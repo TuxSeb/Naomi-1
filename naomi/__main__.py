@@ -9,7 +9,7 @@ from . import profile
 USE_STANDARD_MIC = application.USE_STANDARD_MIC
 USE_TEXT_MIC = application.USE_TEXT_MIC
 USE_BATCH_MIC = application.USE_BATCH_MIC
-
+start_webui = False
 
 def main(args=None):
     parser = argparse.ArgumentParser(description='Naomi Voice Control Center')
@@ -17,6 +17,16 @@ def main(args=None):
         '--debug',
         action='store_true',
         help='Show debug messages'
+    )
+    parser.add_argument(
+        '--no-webui',
+        action='store_true',
+        help='Start the Naomi web GUI'
+    )
+    parser.add_argument(
+        '--webui-only',
+        action='store_true',
+        help='Only start the Naomi web GUI'
     )
     parser.add_argument(
         '--repopulate',
@@ -99,12 +109,14 @@ def main(args=None):
 
     # Select Mic
     used_mic = USE_STANDARD_MIC
-    if p_args.local:
+    if p_args.local or p_args.webui_only:
         # Use Local text mic
         used_mic = USE_TEXT_MIC
     elif p_args.batch_file is not None:
         # Use batched mode mic, pass a file too
         used_mic = USE_BATCH_MIC
+
+
 
     # AaronC 2019-05-29
     # This keeps an argument in a static location
@@ -125,7 +137,8 @@ def main(args=None):
         save_audio=p_args.save_audio,
         save_passive_audio=p_args.save_passive_audio,
         save_active_audio=p_args.save_active_audio,
-        save_noise=p_args.save_noise
+        save_noise=p_args.save_noise,
+        no_webui = p_args.no_webui
     )
     if p_args.list_plugins:
         app.list_plugins()
@@ -133,6 +146,9 @@ def main(args=None):
     elif p_args.list_audio_devices:
         app.list_audio_devices()
         sys.exit(0)
+
+
+
     app.run()
 
 

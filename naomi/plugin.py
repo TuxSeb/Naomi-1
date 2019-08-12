@@ -11,6 +11,7 @@ from . import audioengine
 from . import i18n
 from . import commandline as interface
 from . import profile
+from flask_wtf import FlaskForm
 
 
 class GenericPlugin(object):
@@ -52,12 +53,13 @@ class GenericPlugin(object):
 
     @property
     def profile(self):
-        # FIXME: Remove this in favor of something better
+        # FIXME: Remove this in favor of something betterfrom naomi import profile
         return self._plugin_config
 
     @property
     def info(self):
         return self._plugin_info
+
 
 
 class AudioEnginePlugin(GenericPlugin, audioengine.AudioEngine):
