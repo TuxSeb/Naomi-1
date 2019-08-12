@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+ <meta charset="UTF-8">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} Naomi - setup {% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+<h1>Hello{% if name %}, {{ name }}{% else %} !{% endif %}!</h1>
+</div>
+
+<ul class="nav nav-tabs">
+  <li class="active">
+    <a data-toggle="tab" href="#tab1"> User </a>
+  </li>
+  <li>
+    <a data-toggle="tab" href="#tab2"> Speech To Text </a>
+  </li>
+  <li>
+    <a data-toggle="tab" href="#tab3"> Text To Speech </a>
+  </li>
+  <li>
+    <a data-toggle="tab" href="#tab4"> Audio Configuration </a>
+  </li>
+
+
+</ul>
+
+<div class="tab-content">
+  <div id="tab1" class="tab-pane fade in active">
+
+    <h3> User profile </h3>
+
+      {{ wtf.quick_form(user_form) }}
+
+
+    <h4>* :  Data required </h4>
+
+  </div>
+
+  <div id="tab2" class="tab-pane fade">
+
+    <h3> Speech To Text setup </h3>
+
+    <div class="form-group">
+
+      <label class="control-label"> Select your tts engine </label>
+      {% if stt_form %}
+      <select class="form-control" id="sttform">
+        {% for form in stt_form %}
+
+        {% if current_stt == form.profile_key %}
+        <option selected value={{ form.name }}> {{ form.name }}       </option>
+        {% else %}
+        <option value={{ form.name }}> {{ form.name }}       </option>
+        {% endif %}
+        {% endfor %}
+      </select>
+      {% endif %}
+
+    </div>
+
+    <div>
+
+    {% if stt_form %}
+
+      {% for form in stt_form %}
+
+      {% if current_stt == form.profile_key %}
+      <div class="form-group" id={{ form.name }} name={{ form.name }} style="display:block">
+
+        <h2 class="" id={{ form.name }} name={{ form.name }} > {{ form.name }} </h2>
+        </br>
+
+        {{ wtf.quick_form(form) }}
+      </div>
+
+      {% else %}
+
+      <div class="form-group" id={{ form.name }} name={{ form.name }} style="display:none">
+
+        <h2 class="" id={{ form.name }} name={{ form.name }} > {{ form.name }} </h2>
+        </br>
+        {{ wtf.quick_form(form) }}
+
+      </div>
+      {% endif %}
+
+      {% endfor %}
+
+    {% endif %}
+    </div>
+
+  </div>
+
+  <div id="tab3" class="tab-pane fade">
+
+    <h3> Text To Speech setup </h3>
+
+    <div class="form-group">
+
+      <label class="control-label"> Select your tts engine </label>
+      {% if tts_form %}
+
+
+      <select class="form-control" id="ttsform">
+        {% for form in tts_form %}
+
+        {% if current_stt == form.profile_key %}
+        <option selected  value={{ form.name }}> {{ form.name }}       </option>
+        {% else %}
+        <option value={{ form.name }}> {{ form.name }}       </option>
+        {% endif %}
+
+        {% endfor %}
+      </select>
+      {% endif %}
+
+    </div>
+
+    <div class="card">
+
+    {% if tts_form %}
+
+      {% for form in tts_form %}
+
+
+      {% if current_tts == form.profile_key %}
+      <div class="form-group" id={{ form.name }} name={{ form.name }} style="display:block">
+
+        <h2 class="" id={{ form.name }} name={{ form.name }} > {{ form.name }} </h2>
+        </br>
+
+        {{ wtf.quick_form(form) }}
+
+      </div>
+      {% else %}
+
+      <div class="form-group" id={{ form.name }} name={{ form.name }} style="display:none">
+
+        <h2 class="" id={{ form.name }} name={{ form.name }} > {{ form.name }} </h2>
+        </br>
+
+        {{ wtf.quick_form(form) }}
+
+      </div>
+
+      {% endif %}
+
+      {% endfor %}
+
+    {% endif %}
+    </div>
+
+  </div>
+
+  <div id="tab4" class="tab-pane fade">
+
+    <h3> Audio configuration </h3>
+
+    {{wtf.quick_form(audio_form)}}
+
+  </div>
+
+</div>
+
+<script>
+
+$("#sttform").on("change", function() {
+    $("#" + $(this).val()).show().siblings().hide();
+});
+
+$("#ttsform").on("change", function() {
+    $("#" + $(this).val()).show().siblings().hide();
+});
+
+
+
+
+
+
+</script>
+
+{% endblock %}
+
+
+
+</body>
+
+
+</html>
