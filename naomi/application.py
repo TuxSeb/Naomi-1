@@ -20,6 +20,7 @@ from . import profile
 from .run_command import run_command
 from . import local_mic
 from . import batch_mic
+from . import webui
 from .strcmpci import strcmpci
 
 USE_STANDARD_MIC = 0
@@ -46,7 +47,8 @@ class Naomi(object):
         save_audio=False,
         save_passive_audio=False,
         save_active_audio=False,
-        save_noise=False
+        save_noise=False,
+        no_webui=False
     ):
         global _
         self._logger = logging.getLogger(__name__)
@@ -205,9 +207,14 @@ class Naomi(object):
         self.audio = ae_info.plugin_class(ae_info, self.config)
         # self.check_settings(self.audio, repopulate)
 
+        in_out_device = {}
+
+
         # Initialize audio input device
         devices = [device.slug for device in self.audio.get_devices(
             device_type=audioengine.DEVICE_TYPE_INPUT)]
+        in_out_device["input"] = devices
+
         try:
             device_slug = profile.get_profile_var(['audio', 'input_device'])
         except KeyError:
@@ -272,6 +279,8 @@ class Naomi(object):
         # Initialize audio output device
         devices = [device.slug for device in self.audio.get_devices(
             device_type=audioengine.DEVICE_TYPE_OUTPUT)]
+        in_out_device["output"] = devices
+
         try:
             device_slug = self.config['audio']['output_device']
         except KeyError:
@@ -452,8 +461,14 @@ class Naomi(object):
                 save_noise=save_noise
             )
 
+
+
         self.conversation = conversation.Conversation(
             self.mic, self.brain, self.config)
+
+        if no_webui:
+            self.webui = webui.WebUI(self.mic,
+                        self.conversation, in_out_device)
 
     def list_audio_devices(self):
         for device in self.audio.get_devices():
@@ -902,6 +917,12 @@ class Naomi(object):
                 print(_('Unable to disable plugin "{}"').format(plugin))
         if(plugins_disabled > 0):
             profile.save_profile()
+
+
+
+    def start_web_ui(self):
+        self.webui = webui.WebUI(self.mic,
+            self.conversation)
 
     def run(self):
         self.conversation.askName()

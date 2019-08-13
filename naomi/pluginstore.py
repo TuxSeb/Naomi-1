@@ -110,7 +110,6 @@ def parse_plugin_class(module_name, plugin_directory, superclasses):
 
     if len(plugin_classes) > 1:
         raise PluginError("Multiple plugin classes found!")
-
     return plugin_classes[0][1]
 
 
@@ -194,8 +193,13 @@ class PluginStore(object):
             'speechhandler': plugin.SpeechHandlerPlugin,
             'tts': plugin.TTSPlugin,
             'stt': plugin.STTPlugin,
+<<<<<<< HEAD
             'stt_trainer': plugin.STTTrainerPlugin,
             'vad': plugin.VADPlugin
+=======
+            'vad': plugin.VADPlugin,
+
+>>>>>>> webapp
         }
 
     def detect_plugins(self):
