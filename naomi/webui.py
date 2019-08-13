@@ -64,7 +64,7 @@ class WebUI(object):
 
             name = profile.get_profile_var(['first_name'])
             last_name = profile.get_profile_var(['last_name'])
-            email = profile.get_profile_var(['email'])
+            email = profile.get_profile_var(['email', 'address'])
             keyword = profile.get_profile_var(['keyword'])
             language = profile.get_profile_var(['language'])
             user_form = UserProfileForm(
@@ -100,6 +100,11 @@ class WebUI(object):
             flite_tts = FliteTTS()
             espeak_tts = EspeakTTS()
 
+            tts_form.append(pico_tts)
+            tts_form.append(mary_tts)
+            tts_form.append(flite_tts)
+            tts_form.append(espeak_tts)
+
 
             audio_engine = profile.get_profile_var(['audio_engine'])
             Audio_input = profile.get_profile_var(['audio','input_device'])
@@ -117,8 +122,8 @@ class WebUI(object):
                 profile.set_profile_var(['last_name'], user_form.last_name.data)
                 profile.set_profile_var(['keyword'], user_form.keyword.data)
                 profile.set_profile_var(['language'], user_form.language.data)
-                profile.set_profile_var(['email'], user_form.email.data)
-                #session['name'] = user_form.name.data
+                profile.set_profile_var(['email', 'address'], user_form.email.data)
+                
                 profile.save_profile()
                 flash('You have sucessfully changed your user profile', category='success')
                 return redirect(url_for('setup'))

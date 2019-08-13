@@ -193,14 +193,9 @@ class PluginStore(object):
             'speechhandler': plugin.SpeechHandlerPlugin,
             'tts': plugin.TTSPlugin,
             'stt': plugin.STTPlugin,
-<<<<<<< HEAD
             'stt_trainer': plugin.STTTrainerPlugin,
             'vad': plugin.VADPlugin
-=======
-            'vad': plugin.VADPlugin,
-
->>>>>>> webapp
-        }
+            }
 
     def detect_plugins(self):
         # Set a flag to let ourselves know if we

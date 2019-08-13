@@ -466,7 +466,7 @@ class Naomi(object):
         self.conversation = conversation.Conversation(
             self.mic, self.brain, self.config)
 
-        if no_webui:
+        if not no_webui:
             self.webui = webui.WebUI(self.mic,
                         self.conversation, in_out_device)
 
