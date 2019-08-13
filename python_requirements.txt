@@ -46,3 +46,8 @@ cython
 pandas
 sklearn
 jiwer
+
+#WebUI
+Flask==1.0.3
+Flask-WTF==0.14
+Flask-Bootstrap==3.3.7.1
